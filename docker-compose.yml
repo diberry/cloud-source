@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./packages/server
+    ports:
+      - "3005:3005"
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+
+  client:
+    build:
+      context: ./packages/client
+    environment:
+      - VITE_API_URL=${SERVER_URL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - server

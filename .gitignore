@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# testing
+coverage/
+
+# logs
+logs/
+
+# production
+build/
+dist/
+
+# misc
+.DS_Store
+.env
+.env.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+.azure
+
+# vitest
+test-output/
+
+.old*/
+.env*
+mongodata/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
