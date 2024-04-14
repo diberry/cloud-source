@@ -8,7 +8,6 @@
     "dev": "vite",
     "start:workflow": "vite --host",
     "build": "tsc && vite build",
-    "build:env": "bash ./generate-dotenv.sh",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest --run",
