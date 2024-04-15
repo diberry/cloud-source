@@ -62,7 +62,7 @@ jobs:
       - name: 'Deploy container app'
         run: |
           az containerapp up \
-            --name CLIENT_CONTAINER_APP_NAME \
-            --image ACR_REGISTRY/client:latest \
+            --name ${{ secrets.CLIENT_CONTAINER_APP_NAME }} \
+            --image ${{ secrets.ACR_REGISTRY}}/client:latest \
             --ingress external \
             --target-port 3000
