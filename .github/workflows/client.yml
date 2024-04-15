@@ -58,3 +58,11 @@ jobs:
             cd packages/client
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
+
+      - name: 'Deploy container app'
+      - run: |
+        az containerapp up \
+          --name CLIENT_CONTAINER_APP_NAME \
+          --image ACR_REGISTRY/client:latest \
+          --ingress external \
+          --target-port 3000
