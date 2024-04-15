@@ -60,7 +60,7 @@ jobs:
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
 
       - name: 'Deploy container app'
-      - run: |
+        run: |
           az containerapp up \
             --name CLIENT_CONTAINER_APP_NAME \
             --image ACR_REGISTRY/client:latest \
