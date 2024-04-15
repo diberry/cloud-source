@@ -65,8 +65,8 @@ jobs:
 
       - name: 'Deploy container app'
       - run: |
-        az containerapp up \
-          --name SERVER_CONTAINER_APP_NAME \
-          --image ACR_REGISTRY/server:latest \
-          --ingress external \
-          --target-port 3005
+          az containerapp up \
+            --name SERVER_CONTAINER_APP_NAME \
+            --image ACR_REGISTRY/server:latest \
+            --ingress external \
+            --target-port 3005
