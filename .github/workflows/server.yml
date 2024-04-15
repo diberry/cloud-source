@@ -60,13 +60,14 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
             cd packages/server
-            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
+            docker build . -t latest -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
 
       - name: 'Deploy container app'
         run: |
           az containerapp up \
-            --name ${{ secrets.CLIENT_CONTAINER_APP_NAME }} \
-            --image ${{ secrets.ACR_REGISTRY}}/server:latest \
+            --resource-group rg-dfberry-cloud-basic \
+            --name ca-api-dn4ronhc2fle4 \
+            --image crdn4ronhc2fle4/server:latest \
             --ingress external \
             --target-port 3005
