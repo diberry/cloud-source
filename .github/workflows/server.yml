@@ -65,11 +65,19 @@ jobs:
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:${{ env.SERVER_VERSION }}-${{ github.run_number }}-${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest
 
+      - name: 'Set secrets for container app'
+        run: |
+          az containerapp secret set\
+              --subscription ${{ secrets.SUBSCRIPTION_ID }} \
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} \       
+              --secrets "DATABASE_URL=${{ secrets.DATABASE_URL }}" "DATABASE_NAME=${{ secrets.DATABASE_NAME }}"
+
       - name: 'Deploy container app'
         run: |
           az containerapp update \
               --subscription ${{ secrets.SUBSCRIPTION_ID }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }} \
               --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} \
-              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest \
-              --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" "DATABASE_NAME=${{ secrets.DATABASE_NAME }}"
+              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest 
+
