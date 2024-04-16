@@ -67,7 +67,7 @@ jobs:
 
       - name: 'Set secrets for container app'
         run: |
-          az containerapp secret set\
+          az containerapp secret set \
               --subscription ${{ secrets.SUBSCRIPTION_ID }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }} \
               --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} \       
