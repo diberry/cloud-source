@@ -56,8 +56,11 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
       - run: |
             cd packages/client
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:${{ env.CLIENT_VERSION }}-${{ github.run_number }}-${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest
+
 
       - name: 'Deploy container app'
         run: |
@@ -65,4 +68,4 @@ jobs:
               --subscription ${{ secrets.SUBSCRIPTION_ID }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }} \
               --name  ${{ secrets.CLIENT_CONTAINER_APP_NAME }} \
-              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest
+              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest
