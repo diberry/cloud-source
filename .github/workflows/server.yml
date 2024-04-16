@@ -70,8 +70,7 @@ jobs:
           az containerapp secret set \
               --subscription ${{ secrets.SUBSCRIPTION_ID }} \
               --resource-group ${{ secrets.RESOURCE_GROUP }} \
-              --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} \   
-              --secrets "database-url=${{ secrets.DATABASE_URL }}" "database-name=${{ secrets.DATABASE_NAME }}"    
+              --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} --secrets "database-url=${{ secrets.DATABASE_URL }}" "database-name=${{ secrets.DATABASE_NAME }}"    
 
       - name: 'Deploy container app'
         run: |
