@@ -59,12 +59,10 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest
 
-      # - name: 'Deploy container app'
-      #   run: |
-      #     az containerapp up \
-      #       --resource-group rg-dfberry-cloud-basic \
-      #       --name ca-web-dn4ronhc2fle4 \
-      #       --registry-server crdn4ronhc2fle4 \
-      #       --image crdn4ronhc2fle4/client:latest \
-      #       --ingress external \
-      #       --target-port 3000
+      - name: 'Deploy container app'
+        run: |
+          az containerapp update \
+              --subscription ${{ secrets.SUBSCRIPTION_ID }}
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --name  ${{ secrets.CLIENT_CONTAINER_APP_NAME }} \
+              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/client:latest

@@ -63,10 +63,11 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest
 
-      # - name: 'Deploy container app'
-      #   run: |
-      #     az containerapp update \
-      #       --resource-group rg-dfberry-cloud-basic \
-      #       --name ca-api-dn4ronhc2fle4 \
-      #       --image crdn4ronhc2fle4/server:latest \
-      #       --set-env-vars "REACT_APP_APIM_URL=https://apimbu1app1westusdev.azure-api.net/api" "REACT_APP_APIM_KEY=$REACT_APP_APIM_KEY"
+      - name: 'Deploy container app'
+        run: |
+          az containerapp update \
+              --subscription ${{ secrets.SUBSCRIPTION_ID }}
+              --resource-group ${{ secrets.RESOURCE_GROUP }} \
+              --name  ${{ secrets.SERVER_CONTAINER_APP_NAME }} \
+              --image  ${{ secrets.REGISTRY_LOGIN_SERVER }}/server:latest \
+              --set-env-vars "DATABASE_URL=${{ secrets.DATABASE_URL }}" "DATABASE_NAME=${{ secrets.DATABASE_NAME }}" 
