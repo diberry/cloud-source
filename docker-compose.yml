@@ -1,20 +1,60 @@
-version: "3"
+version: "3.8"
 
 services:
-  server:
+  api:
+    container_name: api
     build:
       context: ./packages/server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "3005:3005"
+    depends_on:
+      - mongodb
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=mongodb://mongo:MongoPass@mongodb:27017
+      - NODE_ENV=development
+    # networks:
+    #   - api
+    #   - web
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3005/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   client:
+    container_name: client
     build:
       context: ./packages/client
     environment:
-      - VITE_API_URL=${SERVER_URL}
+      - VITE_USE_LOCAL_API="true"
+      - VITE_API_URL=http://localhost:3005
     ports:
       - "3000:3000"
     depends_on:
-      - server
+      - api
+    # networks:
+    #   - web
+
+  mongodb:
+    container_name: mongodb
+    image: mongo:5.0
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongo
+      - MONGO_INITDB_ROOT_PASSWORD=MongoPass
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongodata:/.data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # networks:
+    #   - api
+
+volumes:
+  mongodata:

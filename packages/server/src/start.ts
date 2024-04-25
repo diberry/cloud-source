@@ -3,7 +3,7 @@ type RejectionReason = Error | string | null | undefined;
 
 const port: number = !isNaN(Number(process.env.PORT))
   ? Number(process.env.PORT)
-  : 3000;
+  : 3005;
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (err: Error) => {

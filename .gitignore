@@ -31,3 +31,6 @@ mongodata/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Docker compose mongodb
+.data
