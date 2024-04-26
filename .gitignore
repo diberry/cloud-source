@@ -33,4 +33,6 @@ mongodata/
 /playwright/.cache/
 
 # Docker compose mongodb
-.data
+.data/
+tempdata/
+mongodata/
