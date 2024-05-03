@@ -1,0 +1,47 @@
+name: Trigger auto deployment for container-app-pkelterkr7dmw
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'packages/client/**'
+    - '.github/workflows/container-app-pkelterkr7dmw-AutoDeployTrigger-129f1c9b-110d-4d47-9698-ff2956dd1bd4.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.CONTAINERAPPPKELTERKR7DMW_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.CONTAINERAPPPKELTERKR7DMW_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.CONTAINERAPPPKELTERKR7DMW_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/packages/client 
+          registryUrl: containerregistrypkelterkr7dmw.azurecr.io
+          registryUsername: ${{ secrets.CONTAINERAPPPKELTERKR7DMW_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CONTAINERAPPPKELTERKR7DMW_REGISTRY_PASSWORD }}
+          containerAppName: container-app-pkelterkr7dmw
+          resourceGroup: cloudsource8b70
+          imageToBuild: containerregistrypkelterkr7dmw.azurecr.io/container-app-pkelterkr7dmw:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
