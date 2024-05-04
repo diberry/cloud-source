@@ -1,0 +1,47 @@
+name: Trigger auto deployment for container-app-yoi3tmx4jkxo4
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ main ]
+    paths:
+    - 'packages/client/**'
+    - '.github/workflows/container-app-yoi3tmx4jkxo4-AutoDeployTrigger-7f2b9c65-2387-4a77-8523-75e040903bfe.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.CONTAINERAPPYOI3TMX4JKXO4_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.CONTAINERAPPYOI3TMX4JKXO4_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.CONTAINERAPPYOI3TMX4JKXO4_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }}/packages/client 
+          registryUrl: containerregistryyoi3tmx4jkxo4.azurecr.io
+          registryUsername: ${{ secrets.CONTAINERAPPYOI3TMX4JKXO4_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.CONTAINERAPPYOI3TMX4JKXO4_REGISTRY_PASSWORD }}
+          containerAppName: container-app-yoi3tmx4jkxo4
+          resourceGroup: cloudsourceb348
+          imageToBuild: containerregistryyoi3tmx4jkxo4.azurecr.io/container-app-yoi3tmx4jkxo4:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
